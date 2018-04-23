@@ -111,7 +111,7 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
     @Override
     public void deleteDatabase(String database) throws InfluxBusinessException {
         InfluxDB inflxDBConnectWriter = this.getInflxDBConnect(W);
-        QueryResult queryResult = inflxDBConnectWriter.query(new Query("DROP DATABASE " + database, database));
+        QueryResult queryResult = inflxDBConnectWriter.query(new Query("DROP DATABASE " + database, null));
         inflxDBConnectWriter.close();
         if (queryResult.hasError()) {
             throw new InfluxBusinessException(queryResult.getError());
