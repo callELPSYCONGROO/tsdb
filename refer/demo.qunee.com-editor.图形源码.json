@@ -1,0 +1,514 @@
+{
+	"version": "2.0",
+	"datas": [
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "数据源",
+				"styles": {
+					"label.background.color": "#2898E0",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 218.3986788194892,
+							"height": 43.27167514430681
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 240,
+						"y": 150,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "820"
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "数据处理",
+				"styles": {
+					"label.background.color": "#2898e0",
+					"label.color": "#ffffff",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 213.37751792482723,
+							"height": 50.80341648629992
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 240,
+						"y": 270,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "1418"
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "数据",
+				"styles": {
+					"arrow.to": true,
+					"edge.from.offset": {
+						"x": 0,
+						"y": 32.63754581530337
+					},
+					"edge.to.offset": {
+						"x": -0.5370343958073143,
+						"y": -21.154433775807973
+					},
+					"label.font.size": 15
+				},
+				"from": {
+					"_ref": 820
+				},
+				"to": {
+					"_ref": 1418
+				}
+			}
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "InfluxDB主机",
+				"styles": {
+					"label.background.color": "#2898E0",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 222.16454949048585,
+							"height": 50.803416486299916
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 420,
+						"y": 510,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "2801"
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "InfluxDB从机",
+				"styles": {
+					"label.background.color": "#2898E0",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 220.90925926682036,
+							"height": 48.29283603896888
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 420,
+						"y": 630,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "3180"
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "复制",
+				"styles": {
+					"label.font.size": 15,
+					"arrow.to": true,
+					"edge.from.offset": {
+						"x": 2.5105804473310283,
+						"y": 18.829353354982715
+					},
+					"edge.to.offset": {
+						"x": 1.2552902236655141,
+						"y": -1.2552902236655141
+					}
+				},
+				"from": {
+					"_ref": 2801
+				},
+				"to": {
+					"_ref": 3180
+				}
+			}
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "客户端",
+				"styles": {
+					"label.background.color": "#2898e0",
+					"label.color": "#ffffff",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 223.41983971415135,
+							"height": 49.5481262626344
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 600,
+						"y": 150,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "4673"
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "查询代理",
+				"styles": {
+					"label.background.color": "#2898e0",
+					"label.color": "#ffffff",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 214.63280814849261,
+							"height": 49.54812626263439
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 600,
+						"y": 270,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "5679"
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "网关",
+				"styles": {
+					"label.background.color": "#2898E0",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					},
+					"label.size": {
+						"_className": "Q.Size",
+						"json": {
+							"width": 218.39867881948922,
+							"height": 49.548126262634405
+						}
+					},
+					"label.font.size": 18
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 420,
+						"y": 390,
+						"rotate": 0
+					}
+				}
+			},
+			"_refId": "13393"
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "过滤",
+				"styles": {
+					"label.font.size": 15,
+					"edge.to.offset": {
+						"x": -2.779320651135663,
+						"y": -16.1332728811459
+					},
+					"arrow.to": true
+				},
+				"from": {
+					"_ref": 4673
+				},
+				"to": {
+					"_ref": 5679
+				}
+			}
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "储存",
+				"styles": {
+					"arrow.to": true,
+					"label.color": "#0d0d0d",
+					"label.font.size": 15,
+					"edge.from.offset": {
+						"x": -67.78567207793776,
+						"y": 1.2552902236655141
+					},
+					"edge.to.offset": {
+						"x": 42.67986760462748,
+						"y": -6.276451118327571
+					}
+				},
+				"from": {
+					"_ref": 1418
+				},
+				"to": {
+					"_ref": 13393
+				}
+			}
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "查询",
+				"styles": {
+					"edge.to.offset": {
+						"x": -35.1481262626344,
+						"y": -3.765870670996543
+					},
+					"edge.from.offset": {
+						"x": 58.99864051227917,
+						"y": 3.765870670996543
+					},
+					"label.font.size": 15,
+					"arrow.to": true
+				},
+				"from": {
+					"_ref": 5679
+				},
+				"to": {
+					"_ref": 13393
+				}
+			}
+		},
+		{
+			"_className": "Q.Edge",
+			"json": {
+				"name": "分发",
+				"styles": {
+					"edge.to.offset": {
+						"x": -1.2552902236655141,
+						"y": -3.765870670996543
+					},
+					"label.font.size": 15,
+					"arrow.to": true
+				},
+				"from": {
+					"_ref": 13393
+				},
+				"to": {
+					"_ref": 2801
+				}
+			}
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "数据预处理，缓存",
+				"styles": {
+					"label.background.color": "#94afc7",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					}
+				},
+				"location": {
+					"x": 60,
+					"y": 270
+				}
+			}
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "提供查询接口",
+				"styles": {
+					"label.background.color": "#ccc5c5",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					}
+				},
+				"location": {
+					"x": 770,
+					"y": 270
+				}
+			}
+		},
+		{
+			"_className": "Q.Text",
+			"json": {
+				"name": "检测主从存活状态",
+				"styles": {
+					"label.background.color": "#8da9bd",
+					"label.color": "#FFF",
+					"label.padding": {
+						"_className": "Q.Insets",
+						"json": {
+							"top": 3,
+							"left": 5,
+							"bottom": 3,
+							"right": 5
+						}
+					}
+				},
+				"location": {
+					"x": 600,
+					"y": 390
+				}
+			}
+		},
+		{
+			"_className": "Q.Node",
+			"json": {
+				"styles": {
+					"border.width": 0.01
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 425.8795138889318,
+						"y": 575.2512572150313,
+						"rotate": 0
+					}
+				},
+				"size": {
+					"_className": "Q.Size",
+					"json": {
+						"width": 412.7590277778638,
+						"height": 220.6030627706043
+					}
+				},
+				"image": "rect"
+			}
+		},
+		{
+			"_className": "Q.Node",
+			"json": {
+				"styles": {
+					"border.width": 0.01
+				},
+				"location": {
+					"_className": "Q.Point",
+					"json": {
+						"x": 419.3384379510073,
+						"y": 326.5607864358086,
+						"rotate": 0
+					}
+				},
+				"size": {
+					"_className": "Q.Size",
+					"json": {
+						"width": 639.6768759020147,
+						"height": 205.15333694087488
+					}
+				},
+				"image": "rect"
+			}
+		}
+	],
+	"scale": 1.0356170831984424,
+	"tx": 155.85052371506595,
+	"ty": -24.11646182998127
+}
