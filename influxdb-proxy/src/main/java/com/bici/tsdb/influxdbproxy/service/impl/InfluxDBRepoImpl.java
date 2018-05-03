@@ -28,9 +28,6 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
     @Value("${influx.master.url}")
     private String masterUrl;
 
-    @Value("${influx.slave.url}")
-    private String slaveUrl;
-
     @Value("${influx.username.reader}")
     private String usernameR;
 
@@ -65,32 +62,7 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
         } else {
             throw new InfluxBusinessException("type is wrong");
         }
-        InfluxDB connect = InfluxDBFactory.connect(masterUrl, username, password);
-        Pong pingMaster = null;
-        try {
-            System.out.println("链接【主机】。。。");
-            pingMaster = connect.ping();
-        } catch (Exception e) {
-            System.out.println("【主机】链接失败。。。");
-        }
-        if (pingMaster == null) {
-            connect = InfluxDBFactory.connect(slaveUrl, usernameR, passwordR);
-        } else {
-            System.out.println("【主机】链接成功");
-            return connect;
-        }
-        Pong pingSlave = null;
-        try {
-            System.out.println("链接【从机】。。。");
-            pingSlave = connect.ping();
-        } catch (Exception e) {
-            System.out.println("【从机】链接失败。。。");
-        }
-        if (pingSlave == null) {
-            throw new InfluxBusinessException("influxdb connection failed");
-        }
-        System.out.println("【从机】链接成功");
-        return connect;
+        return InfluxDBFactory.connect(masterUrl, username, password);
     }
 
     @Override
