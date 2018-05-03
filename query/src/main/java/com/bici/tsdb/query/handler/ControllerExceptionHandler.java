@@ -1,6 +1,5 @@
 package com.bici.tsdb.query.handler;
 
-import com.bici.tsdb.common.entity.ResultData;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResultData handler(Exception e) {
+    public String handler(Exception e) {
         e.printStackTrace();
-        return ResultData.fail(100, e.getMessage());
+        return "fail";
     }
 }

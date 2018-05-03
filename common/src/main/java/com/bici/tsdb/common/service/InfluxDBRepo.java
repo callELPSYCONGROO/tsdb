@@ -1,6 +1,5 @@
 package com.bici.tsdb.common.service;
 
-import com.bici.tsdb.common.entity.PointDTO;
 import com.bici.tsdb.common.entity.QueryObj;
 import com.bici.tsdb.common.exception.InfluxBusinessException;
 import com.bici.tsdb.common.handler.InfluxDBRepoExceptionHandler;

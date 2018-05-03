@@ -48,6 +48,21 @@ public class DataListener {
         }
     }
 
+//    @KafkaListener(topics = "${kafka.consumer.topic.cpu}", containerFactory = "kafkaListenerContainerFactory")
+//    public void processMessage(ConsumerRecord record) {
+//        PointDTO pointDTO = new PointDTO();
+//        pointDTO.setDatabase("ceshi");
+//        List<PointObj> pointObjs = new ArrayList<>();
+//        this.handling(record, pointObjs);
+//        pointDTO.setPointObjs(pointObjs);
+//        String data = JsonUtil.obj2Json(pointDTO);
+//        try {
+//            influxDBRepo.insertPoints(data);
+//        } catch (InfluxBusinessException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     /**
      * 处理数据方法
      */

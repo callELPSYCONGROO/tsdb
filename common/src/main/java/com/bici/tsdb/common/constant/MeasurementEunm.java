@@ -1,5 +1,6 @@
 package com.bici.tsdb.common.constant;
 
+import com.bici.tsdb.common.entity.Cpu;
 import com.bici.tsdb.common.entity.Student;
 
 /**
@@ -10,7 +11,8 @@ import com.bici.tsdb.common.entity.Student;
  */
 public enum MeasurementEunm {
 
-    STUDENT("student", Student.class);
+    STUDENT("student", Student.class),
+    CESHI("cpu", Cpu.class);
 
     /** 表名 */
     private String measurement;

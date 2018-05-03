@@ -4,6 +4,7 @@ import com.bici.tsdb.common.entity.PointDTO;
 import com.bici.tsdb.common.entity.PointObj;
 import com.bici.tsdb.common.entity.QueryObj;
 import com.bici.tsdb.common.exception.InfluxBusinessException;
+import com.bici.tsdb.common.util.StringUtil;
 import com.bici.tsdb.influxdbproxy.service.InfluxDBRepo;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
@@ -131,7 +132,11 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
     @Override
     public <DAO> List<DAO> queryByTime(QueryObj queryObj, Class<DAO> daoClass) throws InfluxBusinessException {
         InfluxDB inflxDBConnectReader = this.getInflxDBConnect(R);
-        QueryResult queryResult = inflxDBConnectReader.query(new Query("SELECT * FROM " + queryObj.getMeasurement(), queryObj.getDatabase()));
+        String command = "SELECT * FROM " + queryObj.getMeasurement();
+        String orderBy = StringUtil.isBlank(queryObj.getOrderBy()) ? "" : (" ORDER BY " + queryObj.getOrderBy());
+        String limit = queryObj.getLimit() == null || queryObj.getLimit() == 0 ? "" : (" LIMIT " + queryObj.getLimit());
+        command += (orderBy + limit);
+        QueryResult queryResult = inflxDBConnectReader.query(new Query(command, queryObj.getDatabase()));
         inflxDBConnectReader.close();
         if (queryResult.hasError()) {
             throw new InfluxBusinessException(queryResult.getError());
