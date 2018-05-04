@@ -8,7 +8,10 @@ import com.bici.tsdb.common.util.StringUtil;
 import com.bici.tsdb.influxdbproxy.service.InfluxDBRepo;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
-import org.influxdb.dto.*;
+import org.influxdb.dto.BatchPoints;
+import org.influxdb.dto.Point;
+import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -28,6 +31,9 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
     @Value("${influx.master.url}")
     private String masterUrl;
 
+    @Value("${influx.slave.url}")
+    private String slaveUrl;
+
     @Value("${influx.username.reader}")
     private String usernameR;
 
@@ -45,24 +51,24 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
     private final static String R = "R";
 
     /**
-     * 获取读连接对象
+     * 获取读连接对象，读写分离
      * @param type 连接类型，W-写操作，R-读操作
      */
     private InfluxDB getInflxDBConnect(String type) throws InfluxBusinessException {
         String username;
         String password;
         if (W.equals(type)) {
-            System.out.println("使用【写】账户。。。");
             username = usernameW;
             password = passwordW;
+            return InfluxDBFactory.connect(masterUrl, username, password);
         } else if (R.equals(type)) {
-            System.out.println("使用【读】账户");
             username = usernameR;
             password = passwordR;
+            return InfluxDBFactory.connect(slaveUrl, username, password);
         } else {
             throw new InfluxBusinessException("type is wrong");
         }
-        return InfluxDBFactory.connect(masterUrl, username, password);
+
     }
 
     @Override
