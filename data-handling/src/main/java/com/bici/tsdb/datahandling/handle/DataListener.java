@@ -1,6 +1,7 @@
 package com.bici.tsdb.datahandling.handle;
 
 import com.alibaba.fastjson.JSON;
+import com.bici.tsdb.common.constant.CommonConstants;
 import com.bici.tsdb.common.entity.DataMessage;
 import com.bici.tsdb.common.entity.PointDTO;
 import com.bici.tsdb.common.entity.PointObj;
@@ -8,11 +9,16 @@ import com.bici.tsdb.common.exception.InfluxBusinessException;
 import com.bici.tsdb.common.service.InfluxDBRepo;
 import com.bici.tsdb.common.util.CollectionUtil;
 import com.bici.tsdb.common.util.JsonUtil;
+import com.bici.tsdb.datahandling.dao.RedisDao;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * DataListener数据监听器
@@ -24,6 +30,9 @@ public class DataListener {
 
     @Autowired
     private InfluxDBRepo influxDBRepo;
+
+    @Resource(name = "redisDao")
+    private RedisDao redisDao;
 
     /**
      * 分片数量。
@@ -50,6 +59,9 @@ public class DataListener {
         } catch (InfluxBusinessException e) {
             // 获取到的数据插入数据库发生异常时，再分片插入数据库
             this.splitInsert(pointDTO);
+        } catch (Exception e) {
+            // 发生异常，将异常数据存入redis
+            this.saveExceptionData(pointDTO);
         }
     }
 
@@ -64,8 +76,16 @@ public class DataListener {
                 this.insertPointDTO(pointDTO, pointObjs);
             } catch (InfluxBusinessException e) {
                 // 分片插入发生异常，将异常数据存入redis
-
+                this.saveExceptionData(pointDTO);
             }
+        }
+    }
+
+    private void saveExceptionData(PointDTO pointDTO) {
+        try {
+            redisDao.push(CommonConstants.REDIS_CACHE_DATA_PREFIX, JsonUtil.obj2Json(pointDTO));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

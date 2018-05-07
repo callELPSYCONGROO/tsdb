@@ -62,9 +62,30 @@ public class RedisDaoImpl implements RedisDao {
     }
 
     @Override
+    public Long push(byte[] listName, byte[] value) {
+        try (Jedis jedis = this.getRedisResource()){
+            return jedis.lpush(listName, value);
+        }
+    }
+
+    @Override
     public String pop(String listName) {
         try (Jedis jedis = this.getRedisResource()){
-            return jedis.lpop(listName);
+            return jedis.rpop(listName);
+        }
+    }
+
+    @Override
+    public byte[] pop(byte[] listName) {
+        try (Jedis jedis = this.getRedisResource()){
+            return jedis.rpop(listName);
+        }
+    }
+
+    @Override
+    public long llen(String listName) {
+        try (Jedis jedis = this.getRedisResource()){
+            return jedis.llen(listName);
         }
     }
 }

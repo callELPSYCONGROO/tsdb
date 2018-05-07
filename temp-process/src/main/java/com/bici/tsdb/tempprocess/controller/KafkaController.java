@@ -38,6 +38,7 @@ public class KafkaController {
                 return "发送失败！";
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return "发送失败！";
         }
         return "发送成功！";

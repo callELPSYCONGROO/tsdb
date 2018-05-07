@@ -28,10 +28,30 @@ public interface RedisDao {
     Long push(String listName, String value);
 
     /**
+     * 入队
+     * @param listName 队列名称
+     * @param value 入队值
+     */
+    Long push(byte[] listName, byte[] value);
+
+    /**
      * 出队
      * @param listName 队列名称
      * @return 出队值
      */
     String pop(String listName);
 
+    /**
+     * 出队
+     * @param listName 队列名称
+     * @return 出队值
+     */
+    byte[] pop(byte[] listName);
+
+    /**
+     * 获取列表长度
+     * @param listName 列表名称
+     * @return 长度
+     */
+    long llen(String listName);
 }
