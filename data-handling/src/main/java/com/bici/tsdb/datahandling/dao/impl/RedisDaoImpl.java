@@ -55,14 +55,14 @@ public class RedisDaoImpl implements RedisDao {
     }
 
     @Override
-    public Long push(String listName, String value) {
+    public Long push(String listName, String[] value) {
         try (Jedis jedis = this.getRedisResource()){
             return jedis.lpush(listName, value);
         }
     }
 
     @Override
-    public Long push(byte[] listName, byte[] value) {
+    public Long push(byte[] listName, byte[][] value) {
         try (Jedis jedis = this.getRedisResource()){
             return jedis.lpush(listName, value);
         }

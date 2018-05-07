@@ -1,7 +1,6 @@
 package com.bici.tsdb.datahandling.handle;
 
 import com.bici.tsdb.common.constant.CommonConstants;
-import com.bici.tsdb.common.exception.InfluxBusinessException;
 import com.bici.tsdb.common.service.InfluxDBRepo;
 import com.bici.tsdb.datahandling.dao.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DealExceptionData
@@ -38,13 +39,18 @@ public class DealExceptionData {
             System.out.println("----------------》没有数据，处理结束");
             return;
         }
+        List<String> list = new ArrayList<>();
         for (int i = 0; i < llen; i++) {// 只处理当前获取到的长度的数据，新添加的数据留给下个周期
             String json = redisDao.pop(CommonConstants.REDIS_CACHE_DATA_PREFIX);
             try {
                 influxDBRepo.insertPoints(json);// 插入数据库
             } catch (Exception e) {
-                redisDao.push(CommonConstants.REDIS_CACHE_DATA_PREFIX, json);// 插入异常则重新缓存
+                list.add(json);
             }
+        }
+        if (!list.isEmpty()) {
+            String[] strings = new String[list.size()];
+            redisDao.push(CommonConstants.REDIS_CACHE_DATA_PREFIX, list.toArray(strings));// 插入异常则重新缓存
         }
         System.out.println("-----------------》处理完成");
     }

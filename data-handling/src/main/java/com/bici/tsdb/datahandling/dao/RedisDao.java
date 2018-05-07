@@ -25,14 +25,14 @@ public interface RedisDao {
      * @param listName 队列名称
      * @param value 入队值
      */
-    Long push(String listName, String value);
+    Long push(String listName, String[] value);
 
     /**
      * 入队
      * @param listName 队列名称
      * @param value 入队值
      */
-    Long push(byte[] listName, byte[] value);
+    Long push(byte[] listName, byte[][] value);
 
     /**
      * 出队

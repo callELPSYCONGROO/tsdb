@@ -1,0 +1,16 @@
+${AnsiColor.YELLOW}
+                      .                        r                   7        7.
+                     Bu                   .    rB.   ..           gB        QB
+                    BR...iriiJuv          QUiiriIsiiiri          YBivi  .i  IU
+                  iBg PB .Q  BL       .   dU.i     .7           sR   rgv B  UI
+                .siiZ ib  B  Bi       .du Ei Biii..dB          KP  .i.   B  IU
+                r7 vB 5B.sQ.iBiL7       1 Q. B...i.15        .S7iri...   B  U5
+                  .YB sR Lu vX            B  B.    BU       .Y.   5  5v  B  IU
+                   rB 7B B7 Bv ...    .7vXQ  Birdiiir          B. Bv B.  B  U2
+               .L7i7I.isiri.r..i7i    27 1v  Q  Lv  gr         .B . Ii   P  IU
+                   r  .  r   v          .B   B   iBP               iQ...    12
+                  PJ  Br .Bi .BS        B.  .B .7  P1        ivv7rr.     .7 UU
+                 BP   LP  rL   Q.     .B.   .BI7.   2BJvi    ...          .qB7
+                 .                    r      i                              i
+
+${AnsiColor.DEFAULT}
