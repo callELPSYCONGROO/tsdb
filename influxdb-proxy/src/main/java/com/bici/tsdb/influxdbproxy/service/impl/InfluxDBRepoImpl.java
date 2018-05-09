@@ -1,8 +1,6 @@
 package com.bici.tsdb.influxdbproxy.service.impl;
 
-import com.bici.tsdb.common.entity.PointDTO;
-import com.bici.tsdb.common.entity.PointObj;
-import com.bici.tsdb.common.entity.QueryObj;
+import com.bici.tsdb.common.entity.*;
 import com.bici.tsdb.common.exception.InfluxBusinessException;
 import com.bici.tsdb.common.util.StringUtil;
 import com.bici.tsdb.influxdbproxy.service.InfluxDBRepo;
@@ -121,5 +119,25 @@ public class InfluxDBRepoImpl implements InfluxDBRepo {
         }
         InfluxDBResultMapper influxDBResultMapper = new InfluxDBResultMapper();
         return influxDBResultMapper.toPOJO(queryResult, daoClass);
+    }
+
+    @Override
+    public void insertSenor(SenorObj senorObj) throws InfluxBusinessException {
+        BatchPoints.Builder builder = BatchPoints.database("senor");
+        for (Message message : senorObj.getDs()) {
+            Point point = Point.measurement("cgq" + message.getT())
+                                .time(senorObj.getT(), TimeUnit.SECONDS)
+                                .tag("dn", senorObj.getDn())
+                                .tag("mbs", String.valueOf(senorObj.getMbs()))
+                                .tag("ss", String.valueOf(senorObj.getSs()))
+                                .tag("ver", senorObj.getV())
+                                .addField("t", message.getT())
+                                .addField("val", message.getT())
+                                .build();
+            builder.point(point);
+        }
+        InfluxDB inflxDBConnectWriter = this.getInflxDBConnect(W);
+        inflxDBConnectWriter.write(builder.build());
+        inflxDBConnectWriter.close();
     }
 }

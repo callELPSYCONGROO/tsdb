@@ -36,6 +36,11 @@ public class InfluxDBRepoExceptionHandler implements InfluxDBRepo {
         throw this.returnException();
     }
 
+    @Override
+    public void insertSenor(String data) throws InfluxBusinessException {
+        throw this.returnException();
+    }
+
     private InfluxBusinessException returnException() {
         return new InfluxBusinessException("调用远程接口处理异常");
     }

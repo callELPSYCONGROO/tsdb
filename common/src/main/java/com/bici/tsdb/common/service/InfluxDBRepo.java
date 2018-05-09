@@ -49,4 +49,10 @@ public interface InfluxDBRepo {
      */
     @RequestMapping(value = "/queryByTime", method = RequestMethod.POST)
     List queryByTime(@RequestBody QueryObj queryObj) throws InfluxBusinessException;
+
+    /**
+     * 接受报文
+     */
+    @RequestMapping(value = "/insertSenor", method = RequestMethod.POST)
+    void insertSenor(@RequestParam("data") String data) throws InfluxBusinessException;
 }

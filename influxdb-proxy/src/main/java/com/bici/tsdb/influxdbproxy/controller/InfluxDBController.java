@@ -1,8 +1,11 @@
 package com.bici.tsdb.influxdbproxy.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bici.tsdb.common.constant.MeasurementEunm;
 import com.bici.tsdb.common.entity.PointDTO;
 import com.bici.tsdb.common.entity.QueryObj;
+import com.bici.tsdb.common.entity.SenorObj;
 import com.bici.tsdb.common.exception.InfluxBusinessException;
 import com.bici.tsdb.common.util.JsonUtil;
 import com.bici.tsdb.influxdbproxy.service.InfluxDBRepo;
@@ -43,5 +46,13 @@ public class InfluxDBController {
     public List queryByTime(@RequestBody QueryObj queryObj) throws Exception {
         Class clsByMeasurement = MeasurementEunm.getClsByMeasurement(queryObj.getMeasurement());
         return influxDBRepo.queryByTime(queryObj, clsByMeasurement);
+    }
+
+    @RequestMapping(value = "/insertSenor", method = RequestMethod.POST)
+    public void insertSenor(@RequestParam("data") String data) throws InfluxBusinessException {
+        JSONObject jsonObject = JSON.parseObject(data);
+        jsonObject.put("t", System.currentTimeMillis() / 1000);
+        SenorObj senorObj = JsonUtil.json2Obj(jsonObject.toJSONString(), SenorObj.class);
+        influxDBRepo.insertSenor(senorObj);
     }
 }

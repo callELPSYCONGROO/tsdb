@@ -1,8 +1,8 @@
 package com.bici.tsdb.influxdbproxy.service;
 
 import com.bici.tsdb.common.entity.PointDTO;
-import com.bici.tsdb.common.entity.PointObj;
 import com.bici.tsdb.common.entity.QueryObj;
+import com.bici.tsdb.common.entity.SenorObj;
 import com.bici.tsdb.common.exception.InfluxBusinessException;
 
 import java.util.List;
@@ -40,4 +40,6 @@ public interface InfluxDBRepo {
      * @return 结果集
      */
     <DAO> List<DAO> queryByTime(QueryObj queryObj, Class<DAO> daoClass) throws InfluxBusinessException;
+
+    void insertSenor(SenorObj senorObj) throws InfluxBusinessException;
 }

@@ -1,6 +1,7 @@
 package com.bici.tsdb.datahandling.handle;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bici.tsdb.common.constant.CommonConstants;
 import com.bici.tsdb.common.entity.DataMessage;
 import com.bici.tsdb.common.entity.PointDTO;
@@ -15,10 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * DataListener数据监听器
@@ -81,9 +81,13 @@ public class DataListener {
         }
     }
 
+    /**
+     * 异常数据存入redis中
+     * @param pointDTO 异常数据
+     */
     private void saveExceptionData(PointDTO pointDTO) {
         try {
-            redisDao.push(CommonConstants.REDIS_CACHE_DATA_PREFIX, JsonUtil.obj2Json(pointDTO));
+            redisDao.push(CommonConstants.REDIS_CACHE_DATA, new String[]{JsonUtil.obj2Json(pointDTO)});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,6 +140,19 @@ public class DataListener {
     public void processMessage1(List<ConsumerRecord> list) {
         for (ConsumerRecord record : list) {
             System.out.println("my-group-slave get record ------> " + record.toString());
+        }
+    }
+
+    @KafkaListener(topics = "${kafka.consumer.topic.bici}", containerFactory = "kafkaListenerContainerFactory")
+    public void bici(List<ConsumerRecord> list) throws InfluxBusinessException, ParseException {
+        for (ConsumerRecord record : list) {
+            System.out.println("插入数据：" + record.value().toString());
+            JSONObject jsonObject = JSON.parseObject(record.value().toString());
+            String t = jsonObject.getString("t");
+            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss+08:00");
+            long time = sdf.parse(t).getTime();
+//            jsonObject.
+            influxDBRepo.insertSenor(record.value().toString());
         }
     }
 }

@@ -30,10 +30,10 @@ public class DealExceptionData {
     /**
      * 每个过程间隔5秒
      */
-    @Scheduled(fixedDelay = 5000L)
+//    @Scheduled(fixedDelay = 5000L)
     public void doScheduling() {
         System.out.println("开始处理redis中的错误数据--------------》");
-        long llen = redisDao.llen(CommonConstants.REDIS_CACHE_DATA_PREFIX);
+        long llen = redisDao.llen(CommonConstants.REDIS_CACHE_DATA);
         System.out.println("数据长度：" + llen);
         if (llen <= 0) {// 列表没有数据，则返回
             System.out.println("----------------》没有数据，处理结束");
@@ -41,7 +41,7 @@ public class DealExceptionData {
         }
         List<String> list = new ArrayList<>();
         for (int i = 0; i < llen; i++) {// 只处理当前获取到的长度的数据，新添加的数据留给下个周期
-            String json = redisDao.pop(CommonConstants.REDIS_CACHE_DATA_PREFIX);
+            String json = redisDao.pop(CommonConstants.REDIS_CACHE_DATA);
             try {
                 influxDBRepo.insertPoints(json);// 插入数据库
             } catch (Exception e) {
@@ -49,8 +49,9 @@ public class DealExceptionData {
             }
         }
         if (!list.isEmpty()) {
+            System.out.println("异常数据重新插入缓存。。。");
             String[] strings = new String[list.size()];
-            redisDao.push(CommonConstants.REDIS_CACHE_DATA_PREFIX, list.toArray(strings));// 插入异常则重新缓存
+            redisDao.push(CommonConstants.REDIS_CACHE_DATA, list.toArray(strings));// 插入异常则重新缓存
         }
         System.out.println("-----------------》处理完成");
     }

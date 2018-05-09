@@ -8,5 +8,5 @@ package com.bici.tsdb.common.constant;
  */
 public class CommonConstants {
 
-    public final static String REDIS_CACHE_DATA_PREFIX = "excp_data_";
+    public final static String REDIS_CACHE_DATA = "exception_data";
 }
