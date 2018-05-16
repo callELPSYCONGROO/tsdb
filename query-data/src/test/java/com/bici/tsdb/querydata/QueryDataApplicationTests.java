@@ -1,4 +1,4 @@
-package com.bici.tsdb.datahandling;
+package com.bici.tsdb.querydata;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DataHandlingApplicationTests {
+public class QueryDataApplicationTests {
 
     @Test
     public void contextLoads() {

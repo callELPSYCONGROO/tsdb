@@ -1,94 +1,92 @@
 package com.bici.tsdb.common.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
+import com.bici.tsdb.common.constant.CommonConstant;
+import com.bici.tsdb.common.constant.NodeValueEnum;
+import com.bici.tsdb.common.constant.TimeIntervalEnum;
+import lombok.Data;
 
 /**
- * QueryObj查询对象
+ * QueryObj查询参数对象
  * @author: Overload
- * @date: 2018/4/13 17:01
+ * @date: 2018/5/15 8:42
  * @version: 1.0
  */
-public class QueryObj implements Serializable {
+@Data
+public class QueryObj {
 
-    private String database;
-
-    private String measurement;
-
+    /** 开始时间，毫秒 */
     private Long startTime;
 
+    /** 结束时间，毫秒 */
     private Long endTime;
 
+    /** 标签 */
+    private String tag;
+
+    /** 数据库名称 */
+    private String database;
+
+    /** 表名称 */
+    private String measurement;
+
+    /** 时间间隔类型，默认为秒 */
+    private String intervalType = "s";
+
+    /** 查询限制条数 */
     private Integer limit;
 
-    private String orderBy;
+    /** 时间周期 */
+    private String period;
 
-    public String getDatabase() {
-        return database;
+    /** 聚合类型，值处理方式 */
+    private String valueDealType;
+
+    public String getStartTimeSql() {
+        return this.startTime == null ? "" : "AND time > " + this.startTime;
     }
 
-    public void setDatabase(String database) {
-        this.database = database;
+    public String getEndTimeSql() {
+        return this.endTime == null ? "" : "AND time < " + this.endTime;
     }
 
-    public String getMeasurement() {
-        return measurement;
+    public String getLimitSql() {
+        return this.limit == null || this.limit <= 0 ? "" : "LIMIT " + this.limit;
     }
 
-    public void setMeasurement(String measurement) {
-        this.measurement = measurement;
+    public String getPeriodSql() {
+        return this.period == null ? "" : "GROUP BY time(" + this.period + ")";
     }
 
-    public Long getStartTime() {
-        return startTime;
+    public String getValueDealTypeSql() {
+        return NodeValueEnum.isNodeValueEnum(this.valueDealType) ? this.valueDealType + "(value)" : "*";
     }
 
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public String getMeasurementSql() {
+        return this.measurement == null ? "" : CommonConstant.MEASUREMENT_PREFIX + this.measurement;
     }
 
-    public Long getEndTime() {
-        return endTime;
+    public String getDatabaseSql() {
+        return CommonConstant.DATABASE_WITH_RP_PREFIX + this.database;
     }
 
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
+    public void replaceString() throws Exception {
+        this.setDatabase(this.getDatabase().replaceAll("\\W", ""));
+        this.setMeasurement(this.getMeasurement().replaceAll("\\W", ""));
+        if (this.getStartTime() == null && this.getEndTime() != null) {
+            throw new Exception("开始时间为空");
+        }
+        if (this.getDatabase() == null
+                || this.getMeasurement() == null
+                || !TimeIntervalEnum.isIntervalTime(this.getIntervalType())) {
+            throw new Exception("必要参数为空");
+        }
+        // 聚合周期和数据处理方式必须同时有值或者无值
+        if (!((this.getPeriod() != null && this.getValueDealType() != null) || (this.getPeriod() == null && this.getValueDealType() == null))) {
+            throw new Exception("聚合方式错误");
+        }
     }
 
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        QueryObj queryObj = (QueryObj) o;
-        return Objects.equals(database, queryObj.database) && Objects.equals(measurement, queryObj.measurement) && Objects.equals(startTime, queryObj.startTime) && Objects.equals(endTime, queryObj.endTime) && Objects.equals(limit, queryObj.limit) && Objects.equals(orderBy, queryObj.orderBy);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(database, measurement, startTime, endTime, limit, orderBy);
-    }
-
-    @Override
-    public String toString() {
-        return "QueryObj:{" + "database:'" + database + '\'' + ", measurement:'" + measurement + '\'' + ", startTime:" + startTime + ", endTime:" + endTime + ", limit:" + limit + ", orderBy:'" + orderBy + '\'' + '}';
+    public String getTagSql() {
+        return this.tag == null ? "" : "dataType='" + this.tag + "'";
     }
 }
