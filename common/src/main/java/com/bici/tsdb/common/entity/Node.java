@@ -30,8 +30,8 @@ public class Node implements Serializable {
         this.value = value;
     }
 
-    public String getTime() {
-        return String.valueOf(this.time.toEpochMilli());
+    public Long getTime() {
+        return this.time.toEpochMilli();
     }
 
     public void setTime(Instant time) {

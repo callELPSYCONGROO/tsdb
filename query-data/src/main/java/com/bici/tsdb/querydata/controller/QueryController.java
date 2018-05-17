@@ -1,10 +1,10 @@
 package com.bici.tsdb.querydata.controller;
 
-import com.bici.tsdb.common.constant.TimeIntervalEnum;
 import com.bici.tsdb.common.entity.QueryObj;
 import com.bici.tsdb.common.entity.ResultDTO;
 import com.bici.tsdb.querydata.service.InfluxdbReadService;
 import org.influxdb.InfluxDBException;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +24,8 @@ public class QueryController {
     @Resource(name = "influxdbReadService")
     private InfluxdbReadService influxdbReadService;
 
-//    @RequestMapping(value = "/meanByTime", method = {RequestMethod.GET, RequestMethod.POST}, headers = "content-type=application/json")
-    @RequestMapping(value = "/meanByTime")
-    public ResultDTO meanByTime(QueryObj queryObj) {
+    @RequestMapping(value = "/meanByTime", method = {RequestMethod.GET, RequestMethod.POST}, headers = "content-type=application/json")
+    public ResultDTO meanByTime(@RequestBody QueryObj queryObj) {
         try {
             queryObj.replaceString();// 整理表库名称格式
             return ResultDTO.success(influxdbReadService.selectMeanByTime(queryObj));
@@ -35,7 +34,7 @@ public class QueryController {
             return ResultDTO.fail(102, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-        return ResultDTO.fail(99, e.getMessage());
+            return ResultDTO.fail(99, e.getMessage());
         }
     }
 }

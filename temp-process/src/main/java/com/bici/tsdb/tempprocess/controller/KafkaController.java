@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * KafkaController
@@ -30,35 +29,39 @@ public class KafkaController {
 
     @RequestMapping("/send")
     public String send() {
-        Payload payload = new Payload();
-        payload.setFactoryNo("100000bici");
-        payload.setDeviceNo("SSTC500-004097");
-        List<SensorData> sensorDataList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            try {
-                Thread.sleep(1099L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+        for (int j = 0; j < 1; j++) {
+
+
+            Payload payload = new Payload();
+            payload.setFactoryNo("100000bici");
+            payload.setDeviceNo("SSTC500-004097");
+            List<SensorData> sensorDataList = new ArrayList<>();
+            for (int i = 0; i < 500; i++) {
+                SensorData sensorData = new SensorData();
+                sensorData.setDataType("0x07");
+                sensorData.setTime(System.currentTimeMillis() + i * 100 + 97 * j);
+                sensorData.setValue(new Random().nextFloat() * 9 + 1f);
+                sensorDataList.add(sensorData);
             }
-            SensorData sensorData = new SensorData();
-            sensorData.setDataType("0x07");
-            sensorData.setTime(System.currentTimeMillis());
-            sensorData.setValue(new Random().nextFloat() * 9 + 1f);
-            sensorDataList.add(sensorData);
+            payload.setDatas(sensorDataList);
+            String json = JSON.toJSONString(payload);
+            try {
+                ListenableFuture<SendResult<String, String>> listenableFuture = kafkaTemplate.send(CommonConstant.KAFKA_TOPIC_PREFIX + payload.getFactoryNo(), json);
+                listenableFuture.addCallback(
+                        sendResult -> System.out.println("成功发送消息" + json + "到topic：" + CommonConstant.KAFKA_TOPIC_PREFIX + payload.getFactoryNo())
+                        ,
+                        throwable -> System.out.println("发生错误！")
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "发送失败！";
+            }
+
+
         }
-        payload.setDatas(sensorDataList);
-        String json = JSON.toJSONString(payload);
-        try {
-            ListenableFuture<SendResult<String, String>> listenableFuture = kafkaTemplate.send(CommonConstant.KAFKA_TOPIC_PREFIX + payload.getFactoryNo(), json);
-            listenableFuture.addCallback(
-                    sendResult -> System.out.println("成功发送消息" + json + "到topic：" + CommonConstant.KAFKA_TOPIC_PREFIX + payload.getFactoryNo())
-                    ,
-                    throwable -> System.out.println("发生错误！")
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "发送失败！";
-        }
+
+
         return "发送成功！";
     }
 }

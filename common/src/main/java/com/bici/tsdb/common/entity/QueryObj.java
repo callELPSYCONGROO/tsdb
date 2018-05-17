@@ -1,7 +1,7 @@
 package com.bici.tsdb.common.entity;
 
 import com.bici.tsdb.common.constant.CommonConstant;
-import com.bici.tsdb.common.constant.NodeValueEnum;
+import com.bici.tsdb.common.constant.InfluxDBFunctionEnum;
 import com.bici.tsdb.common.constant.TimeIntervalEnum;
 import lombok.Data;
 
@@ -29,8 +29,8 @@ public class QueryObj {
     /** 表名称 */
     private String measurement;
 
-    /** 时间间隔类型，默认为秒 */
-    private String intervalType = "s";
+    /** 返回时间精度类型 */
+    private String intervalType;
 
     /** 查询限制条数 */
     private Integer limit;
@@ -58,7 +58,7 @@ public class QueryObj {
     }
 
     public String getValueDealTypeSql() {
-        return NodeValueEnum.isNodeValueEnum(this.valueDealType) ? this.valueDealType + "(value)" : "*";
+        return this.valueDealType == null ? "*" : this.valueDealType + "(value) AS value";
     }
 
     public String getMeasurementSql() {
@@ -70,8 +70,9 @@ public class QueryObj {
     }
 
     public void replaceString() throws Exception {
-        this.setDatabase(this.getDatabase().replaceAll("\\W", ""));
-        this.setMeasurement(this.getMeasurement().replaceAll("\\W", ""));
+        if (this.getMeasurement() == null || this.getDatabase() == null || this.getTag() == null) {
+            throw new Exception("参数为空，请检查入参");
+        }
         if (this.getStartTime() == null && this.getEndTime() != null) {
             throw new Exception("开始时间为空");
         }
@@ -84,6 +85,11 @@ public class QueryObj {
         if (!((this.getPeriod() != null && this.getValueDealType() != null) || (this.getPeriod() == null && this.getValueDealType() == null))) {
             throw new Exception("聚合方式错误");
         }
+        if (this.getValueDealType() != null && !InfluxDBFunctionEnum.isInfluxDBFunction(this.getValueDealType())) {
+            throw new Exception("非法函数");
+        }
+        this.setDatabase(this.getDatabase().replaceAll("\\W", ""));
+        this.setMeasurement(this.getMeasurement().replaceAll("\\W", ""));
     }
 
     public String getTagSql() {

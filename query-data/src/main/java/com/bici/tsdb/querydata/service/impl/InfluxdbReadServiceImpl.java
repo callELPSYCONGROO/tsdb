@@ -1,8 +1,8 @@
 package com.bici.tsdb.querydata.service.impl;
 
 import com.bici.tsdb.common.constant.CommonConstant;
-import com.bici.tsdb.common.constant.NodeValueEnum;
 import com.bici.tsdb.common.constant.TimeIntervalEnum;
+import com.bici.tsdb.common.entity.Node;
 import com.bici.tsdb.common.entity.QueryObj;
 import com.bici.tsdb.common.util.InfluxDBResultMapper;
 import com.bici.tsdb.common.util.StringUtil;
@@ -55,9 +55,8 @@ public class InfluxdbReadServiceImpl implements InfluxdbReadService {
                                             checkNull(queryObj.getEndTimeSql()),
                                             checkNull(queryObj.getPeriodSql()),
                                             checkNull(queryObj.getLimitSql()));
-        System.out.println(sql);
         QueryResult queryResult = this.influxDBConnect().query(new Query(sql, queryObj.getDatabase()), Objects.requireNonNull(TimeIntervalEnum.getIntervalTimeEnum(queryObj.getIntervalType())).getTimeUnit());
-        return new InfluxDBResultMapper().toPOJO(queryResult, NodeValueEnum.getNodeObj(queryObj.getValueDealType()));
+        return new InfluxDBResultMapper().toPOJO(queryResult, Node.class);
     }
 
     /**
