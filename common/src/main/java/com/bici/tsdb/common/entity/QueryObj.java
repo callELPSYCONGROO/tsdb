@@ -42,11 +42,11 @@ public class QueryObj {
     private String valueDealType;
 
     public String getStartTimeSql() {
-        return this.startTime == null ? "" : "AND time > " + this.startTime;
+        return this.startTime == null ? "" : "AND time > " + this.startTime + "000000";
     }
 
     public String getEndTimeSql() {
-        return this.endTime == null ? "" : "AND time < " + this.endTime;
+        return this.endTime == null ? "" : "AND time < " + this.endTime + "000000";
     }
 
     public String getLimitSql() {

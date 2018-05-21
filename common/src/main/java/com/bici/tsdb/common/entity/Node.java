@@ -23,7 +23,8 @@ public class Node implements Serializable {
     private Instant time;
 
     public Double getValue() {
-        return value;
+//        return new BigDecimal(this.value).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+        return this.value;
     }
 
     public void setValue(Double value) {

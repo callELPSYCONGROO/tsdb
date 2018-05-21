@@ -7,6 +7,7 @@ import com.bici.tsdb.common.entity.QueryObj;
 import com.bici.tsdb.common.util.InfluxDBResultMapper;
 import com.bici.tsdb.common.util.StringUtil;
 import com.bici.tsdb.querydata.service.InfluxdbReadService;
+import okhttp3.OkHttpClient;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * InfluxDB读取接口
@@ -40,7 +42,16 @@ public class InfluxdbReadServiceImpl implements InfluxdbReadService {
      * 建立连接对象
      */
     private InfluxDB influxDBConnect() {
-        return InfluxDBFactory.connect(url, username, password);
+        return InfluxDBFactory.connect(url, username, password, connectClient());
+    }
+
+    /**
+     * 请求数据库连接超时为30秒
+     */
+    private OkHttpClient.Builder connectClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(30L, TimeUnit.SECONDS);
+        return builder;
     }
 
     @Override
@@ -55,6 +66,7 @@ public class InfluxdbReadServiceImpl implements InfluxdbReadService {
                                             checkNull(queryObj.getEndTimeSql()),
                                             checkNull(queryObj.getPeriodSql()),
                                             checkNull(queryObj.getLimitSql()));
+        System.out.println(sql);
         QueryResult queryResult = this.influxDBConnect().query(new Query(sql, queryObj.getDatabase()), Objects.requireNonNull(TimeIntervalEnum.getIntervalTimeEnum(queryObj.getIntervalType())).getTimeUnit());
         return new InfluxDBResultMapper().toPOJO(queryResult, Node.class);
     }
